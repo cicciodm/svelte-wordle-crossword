@@ -1,16 +1,20 @@
 <script lang="ts">
-	export let name: string;
+	import Crossword from "./game/Crossword.svelte";
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<h1>Welcome to CrossWordle</h1>
+	<p>Solve the Crossword on the left by solving a Wordle puzzle per definition. Will this make sense?</p>
+
+	<div class="gameContainer">
+		<Crossword />
+	</div>
+
 </main>
 
 <style>
 	main {
 		text-align: center;
-		padding: 1em;
 		max-width: 240px;
 		margin: 0 auto;
 	}
@@ -26,5 +30,10 @@
 		main {
 			max-width: none;
 		}
+	}
+
+	.gameContainer {
+		display: flex;
+		justify-content: center;
 	}
 </style>
