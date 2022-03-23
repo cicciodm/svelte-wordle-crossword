@@ -51,6 +51,7 @@
   }
 
   function validateCurrentGuess(): void {
+    var solutionMapCopy = {...solutionMap};
     var validatedTry = [...currentTry].map((wt, i) => {
       var char = wt.value;
 
@@ -59,14 +60,17 @@
         category: "guess"
       };
 
-      var correctLetterEntry = solutionMap[char];
+      var correctLetterEntry = solutionMapCopy[char];
 
-      if (correctLetterEntry) {
+      if (correctLetterEntry && correctLetterEntry.length) {
         validatedLetterTry.category = "almost";
         console.log("Checking", wt, i, "against", correctLetterEntry);
 
         if (correctLetterEntry.filter(correct => correct === i).length) {
           validatedLetterTry.category = "correct";
+          console.log("found a correct letter, before", wt.value, solutionMapCopy[char]);
+          solutionMapCopy[char] = solutionMapCopy[char].filter(idx => idx !== i);
+          console.log("found a correct letter, after", solutionMapCopy[char]);
         }
       }
       return validatedLetterTry;
@@ -93,13 +97,15 @@
 
 </script>
 
-
-<div class="container" on:keypress={keyPressed}>
+<div>
+  <span>Wordle nr {solutionMap["a"]}</span>
+<div class="container">
   {#each Array(allowedTries) as _, tryIndex}
     {#each Array(5) as _, tryLetterIndex}
       <div class="letterEntry {tries?.[tryIndex]?.[tryLetterIndex]?.category}">{tries?.[tryIndex]?.[tryLetterIndex]?.value || ""}</div>
     {/each}
   {/each}
+</div>
 </div>
 
 <style>

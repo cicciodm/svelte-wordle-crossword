@@ -67,6 +67,11 @@
 		}
 		console.log("After filling solution", crosswordState);
 		crosswordState = crosswordState;
+		selectedElement = {
+			element: "column",
+			x: null,
+			y: null
+		}
 	}
 
 </script>
