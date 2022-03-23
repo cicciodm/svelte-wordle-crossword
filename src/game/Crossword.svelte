@@ -1,19 +1,17 @@
 <script lang="ts">
+  import {CrosswordElementSelection } from "../Types";
+
   export let selectedElement: CrosswordElementSelection;
   export let setSelection: (x: number, y: number) => void;
+  export let crosswordState: string[];
 
-  let crosswordStatus: string[] = ["     ","     ","     ","     ","     "];
 </script>
 
 
 <div class="container">
-  {#each crosswordStatus as entry, y}
+  {#each crosswordState as entry, y}
     {#each entry as letter, x}
-      {#if selectedElement.element === "row" ? y === selectedElement.y : x === selectedElement.x}
-        <div class="selectedLetterEntry" on:click={() => setSelection(x,y)}>{letter}</div>
-      {:else}
-        <div class="letterEntry" on:click={() => setSelection(x,y)}>{letter}</div>
-      {/if}
+      <div class="letterEntry {(selectedElement.element === 'row' ? y === selectedElement.y : x === selectedElement.x) ? 'selected' :''}" on:click={() => setSelection(x,y)}>{letter}</div>
     {/each}
   {/each}
 </div>
@@ -37,13 +35,7 @@
 		font-size: 2em;
   }
 
-  .selectedLetterEntry {
+  .selected {
     background-color: lightskyblue;
-    border: solid 1px black;
-    margin: 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-		font-size: 2em;
   }
 </style>

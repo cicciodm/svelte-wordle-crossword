@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Crossword from "./game/Crossword.svelte";
 	import Wordle from "./game/Wordle.svelte";
+	import {CrosswordElementSelection} from "./Types";
 
 	const crosswordConfig: string[] =
 	[
@@ -16,6 +17,8 @@
     x: null,
     y: null
   };
+
+  let crosswordState: string[] = ["     ","     ","     ","     ","     "];
 
 	$: wordleSolution = selectedElement.element === "row" ?
 		crosswordConfig[selectedElement.y] :
@@ -47,6 +50,25 @@
     }
   }
 
+	function fillSolutionForSelection(): void {
+		console.log("a complete has been called", selectedElement);
+		if (selectedElement.element === "row") {
+			crosswordState[selectedElement.y] = crosswordConfig[selectedElement.y];
+		} else {
+			crosswordState.forEach((entry, i) => {
+				const selectedIndex = selectedElement.x;
+				const replaced =
+					entry.substring(0, selectedIndex) +
+				 	crosswordConfig[i][selectedIndex] +
+					entry.substring(selectedIndex + 1);
+				console.log("the original", entry, "The replaced string", replaced, "substituting", crosswordState[selectedElement.y]);
+				crosswordState[i] = replaced;
+			});
+		}
+		console.log("After filling solution", crosswordState);
+		crosswordState = crosswordState;
+	}
+
 </script>
 
 <main>
@@ -55,10 +77,13 @@
 
 	<div class="gameContainer">
 		<Crossword
+			crosswordState={crosswordState}
 			selectedElement={selectedElement}
 			setSelection={setSelection}/>
 		{#if selectedElement.x !== null}
-			<Wordle solution={wordleSolution} />
+			<Wordle
+				solution={wordleSolution}
+				complete={fillSolutionForSelection} />
 		{/if}
 	</div>
 
