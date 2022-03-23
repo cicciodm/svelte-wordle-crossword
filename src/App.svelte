@@ -1,5 +1,51 @@
 <script lang="ts">
 	import Crossword from "./game/Crossword.svelte";
+
+	const crosswordConfig: string[] =
+	[
+		"GRADE",
+		"LOVED",
+		"AMONG",
+		"RAISE",
+		"ENDED",
+	];
+
+  let selectedElement: CrosswordElementSelection = {
+    element: "column",
+    x: null,
+    y: null
+  };
+
+	$: wordleSolution = selectedElement.element === "row" ?
+		crosswordConfig[selectedElement.y] :
+		crosswordConfig.map(s => s[selectedElement.x]).join("");
+
+		function setSelection(x: number, y: number): void {
+    if (selectedElement.x === null) {
+      // first selection
+      selectedElement = {
+        element: "row",
+        x,
+        y
+      }
+      return;
+    }
+
+    if (selectedElement.element === "row") {
+      selectedElement = {
+        element: selectedElement.y === y ? "column" : "row",
+          x,
+          y
+      }
+    } else {
+      selectedElement = {
+        element: selectedElement.x === x ? "row" : "column",
+          x,
+          y
+      }
+    }
+  }
+
 </script>
 
 <main>
@@ -7,7 +53,12 @@
 	<p>Solve the Crossword on the left by solving a Wordle puzzle per definition. Will this make sense?</p>
 
 	<div class="gameContainer">
-		<Crossword />
+		<Crossword
+			selectedElement={selectedElement}
+			setSelection={setSelection}/>
+		{#if selectedElement}
+			<div>Solution is {wordleSolution}</div>
+		{/if}
 	</div>
 
 </main>

@@ -1,61 +1,12 @@
 <script lang="ts">
-
-  type GridElement = "row" | "column";
-  interface Selection {
-    element: GridElement;
-    x: number;
-    y: number;
-  };
-
-  let selectedElement: Selection = {
-    element: "column",
-    x: null,
-    y: null
-  };
-
-  const crosswordConfig: string[] =
-  [
-    "GRADE",
-    "LOVED",
-    "AMONG",
-    "RAISE",
-    "ENDED",
-  ];
+  export let selectedElement: CrosswordElementSelection;
+  export let setSelection: (x: number, y: number) => void;
 
   let crosswordStatus: string[] = ["     ","     ","     ","     ","     "];
-
-  function setSelection(x: number, y: number): void {
-    if (selectedElement.x === null) {
-      // first selection
-      selectedElement = {
-        element: "row",
-        x,
-        y
-      }
-      return;
-    }
-
-    if (selectedElement.element === "row") {
-      selectedElement = {
-        element: selectedElement.y === y ? "column" : "row",
-          x,
-          y
-      }
-    } else {
-      selectedElement = {
-        element: selectedElement.x === x ? "row" : "column",
-          x,
-          y
-      }
-    }
-  }
-
 </script>
 
 
-<div>
-  <div>Game state: {JSON.stringify(selectedElement)}</div>
-  <div class="container">
+<div class="container">
   {#each crosswordStatus as entry, y}
     {#each entry as letter, x}
       {#if selectedElement.element === "row" ? y === selectedElement.y : x === selectedElement.x}
@@ -65,7 +16,6 @@
       {/if}
     {/each}
   {/each}
-  </div>
 </div>
 
 <style>
