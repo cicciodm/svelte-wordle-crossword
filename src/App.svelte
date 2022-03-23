@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Crossword from "./game/Crossword.svelte";
+	import Wordle from "./game/Wordle.svelte";
 
 	const crosswordConfig: string[] =
 	[
@@ -56,8 +57,8 @@
 		<Crossword
 			selectedElement={selectedElement}
 			setSelection={setSelection}/>
-		{#if selectedElement}
-			<div>Solution is {wordleSolution}</div>
+		{#if selectedElement.x !== null}
+			<Wordle solution={wordleSolution} />
 		{/if}
 	</div>
 
