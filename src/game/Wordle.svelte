@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { WordleElement, WordleTry } from "../Types";
+  import { wordSet } from "./wordList";
 
   export let solution: string;
   export let complete: () => void;
@@ -38,7 +39,7 @@
       return;
     }
 
-    if (currentTry?.length === 5 || !char.match(/[A-Z]/)) {
+    if (currentTry?.length === 5 || !char.match(/[A-Z]{1}/)) {
       console.log("Invalid char or string too long");
       return;
     }

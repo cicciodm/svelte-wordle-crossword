@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {CrosswordElementSelection } from "../Types";
+  import { CrosswordElementSelection } from "../Types";
 
   export let selectedElement: CrosswordElementSelection;
   export let setSelection: (x: number, y: number) => void;
