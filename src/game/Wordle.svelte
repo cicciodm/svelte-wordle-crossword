@@ -29,7 +29,7 @@
 
     if (char === "BACKSPACE") {
       tries[currentTryIndex].pop();
-      tries[currentTryIndex] = tries[currentTryIndex];
+      tries[currentTryIndex] = tries[currentTryIndex].map(t => ({...t, category: "guess"}));
       return;
     }
 
@@ -102,13 +102,11 @@
 </script>
 
 <div class="container">
-  {#key solution}
-    {#each Array(allowedTries) as _, tryIndex}
-      {#each Array(5) as _, tryLetterIndex}
-        <div class="letterEntry {tries?.[tryIndex]?.[tryLetterIndex]?.category}">{tries?.[tryIndex]?.[tryLetterIndex]?.value || ""}</div>
-      {/each}
+  {#each Array(allowedTries) as _, tryIndex}
+    {#each Array(5) as _, tryLetterIndex}
+      <div class="letterEntry {tries?.[tryIndex]?.[tryLetterIndex]?.category}">{tries?.[tryIndex]?.[tryLetterIndex]?.value || ""}</div>
     {/each}
-  {/key}
+  {/each}
 </div>
 
 <style>
