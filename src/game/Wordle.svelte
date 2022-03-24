@@ -39,7 +39,7 @@
       return;
     }
 
-    if (currentTry?.length === 5 || !char.match(/[A-Z]{1}/)) {
+    if (currentTry?.length === 5 || !char.match(/^[A-Z]{1}$/)) {
       console.log("Invalid char or string too long");
       return;
     }
@@ -47,11 +47,18 @@
     var newTry: WordleTry = [...currentTry, {category: "guess", value: char}];
     tries[currentTryIndex] = newTry;
     tries = tries;
-
-    console.log("tries", tries);
   }
 
   function validateCurrentGuess(): void {
+    const fullTry = currentTry.map(t => t.value).join("");
+    
+    if (!wordSet.has(fullTry)) {
+      // Invalid word
+      tries[currentTryIndex] = currentTry.map(t => ({...t, category: "error" }));
+      tries = tries;
+      return;
+    }
+
     var solutionMapCopy = {...solutionMap};
     var validatedTry = [...currentTry].map((wt, i) => {
       var char = wt.value;
@@ -134,5 +141,9 @@
 
   .correct {
     background-color: #538d4e;
+  }
+  
+  .error {
+    color: red;
   }
 </style>

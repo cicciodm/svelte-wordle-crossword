@@ -1,5 +1,5 @@
 export type GridElement = "row" | "column";
-export type WordleCategory = "guess" | "almost" | "correct";
+export type WordleCategory = "guess" | "error" | "almost" | "correct";
 export type WordleTry = WordleElement[];
 
 export interface CrosswordElementSelection {
