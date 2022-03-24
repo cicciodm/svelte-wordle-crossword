@@ -21,7 +21,6 @@
       map[letter] = [...(map[letter] || []), index];
     });
 
-    console.log("mapped", map);
     return map;
   }
 
@@ -40,7 +39,6 @@
     }
 
     if (currentTry?.length === 5 || !char.match(/^[A-Z]{1}$/)) {
-      console.log("Invalid char or string too long");
       return;
     }
 
@@ -72,14 +70,13 @@
 
       if (correctLetterEntry && correctLetterEntry.length) {
         validatedLetterTry.category = "almost";
-        console.log("Checking", wt, i, "against", correctLetterEntry);
 
         if (correctLetterEntry.filter(correct => correct === i).length) {
           validatedLetterTry.category = "correct";
-          console.log("found a correct letter, before", wt.value, solutionMapCopy[char]);
           solutionMapCopy[char] = solutionMapCopy[char].filter(idx => idx !== i);
-          console.log("found a correct letter, after", solutionMapCopy[char]);
-        }
+        } else {
+          solutionMapCopy[char] = solutionMapCopy[char].filter(idx => idx > i);
+        } 
       }
       return validatedLetterTry;
     });
@@ -89,7 +86,6 @@
     currentTryIndex = currentTryIndex + 1;
 
     if (validatedTry.every(t => t.category === "correct")) {
-      console.log("We are correct, completing");
       document.onkeydown = null;
       complete();
     }
@@ -105,15 +101,14 @@
 
 </script>
 
-<div>
-  <span>Wordle nr {solutionMap["a"]}</span>
 <div class="container">
-  {#each Array(allowedTries) as _, tryIndex}
-    {#each Array(5) as _, tryLetterIndex}
-      <div class="letterEntry {tries?.[tryIndex]?.[tryLetterIndex]?.category}">{tries?.[tryIndex]?.[tryLetterIndex]?.value || ""}</div>
+  {#key solution}
+    {#each Array(allowedTries) as _, tryIndex}
+      {#each Array(5) as _, tryLetterIndex}
+        <div class="letterEntry {tries?.[tryIndex]?.[tryLetterIndex]?.category}">{tries?.[tryIndex]?.[tryLetterIndex]?.value || ""}</div>
+      {/each}
     {/each}
-  {/each}
-</div>
+  {/key}
 </div>
 
 <style>
