@@ -7,6 +7,12 @@
   export let complete: () => void;
 
   const allowedTries = 6;
+  
+  const keyboardRows = [
+    "QWERTYUIOP",
+    "ASDFGHJKL",
+    "ZXCVBNM"
+  ];
 
   let tries: WordleTry[] = [];
   let currentTryIndex = 0;
@@ -14,6 +20,14 @@
   $: solutionMap = mapifyString(solution);
   $: currentTry = tries[currentTryIndex] ?? [];
   $: currentLetterIndex = tries[currentTryIndex]?.length;
+  $: lettersMap = tries.slice(0, currentTryIndex).reduce((map, wordleTry) => {
+    wordleTry.forEach(t => {
+      map[t.value] = t.category;
+    });
+    return map;
+  }, {});
+
+  $: console.log("Re-calculating", lettersMap);
 
   function mapifyString(original: string): {[key: string]: number[]} {
     var map = {};
@@ -104,8 +118,17 @@
 <div class="container">
   {#each Array(allowedTries) as _, tryIndex}
     {#each Array(5) as _, tryLetterIndex}
-      <div class="letterEntry {tries?.[tryIndex]?.[tryLetterIndex]?.category}">{tries?.[tryIndex]?.[tryLetterIndex]?.value || ""}</div>
+      <div class="letterEntry {tries?.[tryIndex]?.[tryLetterIndex]?.category !== 'guess' ? tries?.[tryIndex]?.[tryLetterIndex]?.category : '' }">{tries?.[tryIndex]?.[tryLetterIndex]?.value || ""}</div>
     {/each}
+  {/each}
+</div>
+<div class="keyboardContainer">
+  {#each keyboardRows as row }
+    <div class="rowContainer">
+      {#each row as letter}
+        <div class="{lettersMap[letter] !== undefined ? lettersMap[letter] : ''} keyboardLetterContainer">{letter}</div>
+      {/each}
+    </div>
   {/each}
 </div>
 
@@ -129,14 +152,45 @@
   }
 
   .almost {
-    background-color: #b59f3b;
+    background-color: #e6cd62 !important;
   }
 
   .correct {
-    background-color: #538d4e;
+    background-color: #75c56d !important;
   }
   
   .error {
     color: red;
+  }
+  
+  .guess {
+    background-color: grey !important;
+  }
+
+  .keyboardContainer {
+    position: fixed;
+    bottom: 350px;
+    display: flex;
+    width: 500px;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .rowContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .keyboardLetterContainer {
+    height: 53px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    background-color: #bdbdbd;
+    font-size: 1em;
+    margin: 5px;
   }
 </style>
