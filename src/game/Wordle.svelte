@@ -4,9 +4,30 @@
   import { wordSet } from "./wordListUtilities";
 
   export let solution: string;
+  export let existingLetterCount: number;
   export let complete: () => void;
 
-  const allowedTries = 6;
+  const MAX_TRIES = 6;
+
+  let allowedTries;
+
+  switch(existingLetterCount) {
+    case 0:
+    case 1:
+      allowedTries = MAX_TRIES;
+      break;
+    case 2:
+      allowedTries = MAX_TRIES - 2;
+      break;
+    case 3:
+      allowedTries = MAX_TRIES - 3;
+      break;
+    case 4:
+      allowedTries = MAX_TRIES - 4;
+      break;
+  }
+
+  console.log("Existing letters", existingLetterCount, allowedTries);
 
   const keyboardRows = [
     "QWERTYUIOP",

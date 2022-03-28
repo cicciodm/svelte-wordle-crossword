@@ -24,6 +24,10 @@
 		crosswordConfig[selectedElement.y] :
 		crosswordConfig.map(s => s[selectedElement.x]).join("");
 
+	$: solvedLettersCount = selectedElement.element === "row" ?
+		[...crosswordState[selectedElement.y]].filter(l => l !== " ").length :
+		crosswordState.map(s => s[selectedElement.x]).filter(l => l !== " ").length;
+
 		function setSelection(x: number, y: number): void {
     if (selectedElement.x === null) {
       // first selection
@@ -78,9 +82,10 @@
 			selectedElement={selectedElement}
 			setSelection={setSelection}/>
 		{#if selectedElement.x !== null}
-			{#key wordleSolution}	
+			{#key wordleSolution}
 				<Wordle
 					solution={wordleSolution}
+					existingLetterCount={solvedLettersCount}
 					complete={fillSolutionForSelection} />
 			{/key}
 		{/if}
