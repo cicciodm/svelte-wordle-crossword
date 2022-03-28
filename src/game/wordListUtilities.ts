@@ -12973,4 +12973,4 @@ const words = [
   "zymic",
 ];
 
-export const wordSet = new Set(words);
+export const wordSet = new Set(words.map(w => w.toLocaleUpperCase()));

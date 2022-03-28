@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { WordleElement, WordleTry } from "../Types";
-  import { wordSet } from "./wordList";
+  import { wordSet } from "./wordListUtilities";
 
   export let solution: string;
   export let complete: () => void;
 
   const allowedTries = 6;
-  
+
   const keyboardRows = [
     "QWERTYUIOP",
     "ASDFGHJKL",
@@ -26,8 +26,6 @@
     });
     return map;
   }, {});
-
-  $: console.log("Re-calculating", lettersMap);
 
   function mapifyString(original: string): {[key: string]: number[]} {
     var map = {};
@@ -63,7 +61,7 @@
 
   function validateCurrentGuess(): void {
     const fullTry = currentTry.map(t => t.value).join("");
-    
+    console.log(wordSet, fullTry, wordSet.has(fullTry));
     if (!wordSet.has(fullTry)) {
       // Invalid word
       tries[currentTryIndex] = currentTry.map(t => ({...t, category: "error" }));
@@ -90,7 +88,7 @@
           solutionMapCopy[char] = solutionMapCopy[char].filter(idx => idx !== i);
         } else {
           solutionMapCopy[char] = solutionMapCopy[char].filter(idx => idx > i);
-        } 
+        }
       }
       return validatedLetterTry;
     });
@@ -158,18 +156,18 @@
   .correct {
     background-color: #75c56d !important;
   }
-  
+
   .error {
     color: red;
   }
-  
+
   .guess {
     background-color: grey !important;
   }
 
   .keyboardContainer {
     position: fixed;
-    bottom: 350px;
+    bottom: 30px;
     display: flex;
     width: 500px;
     justify-content: center;
