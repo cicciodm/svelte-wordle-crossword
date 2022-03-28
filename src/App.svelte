@@ -70,7 +70,7 @@
 
 <main>
 	<h1>Welcome to CrossWordle</h1>
-	<p>Solve the Crossword on the left by solving a Wordle puzzle per definition. Will this make sense?</p>
+	<p>Solve the Crossword by playing a Wordle puzzle for each definition</p>
 
 	<div class="gameContainer">
 		<Crossword
